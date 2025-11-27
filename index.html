@@ -1,117 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Surpresa 💛</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presente Surpresa 🎁</title>
 
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        background: #1b1b1b;
-        color: white;
-        font-family: Arial, sans-serif;
-        text-align: center;
-    }
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f7e9a6;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
 
-    .container {
-        max-width: 430px;
-        margin: auto;
-        padding: 20px;
-    }
+        h1 {
+            color: #5a3d00;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
 
-    img {
-        max-width: 100%;
-    }
+        #botaoBau img {
+            width: 180px;
+            transition: transform 0.2s;
+        }
 
-    /* Seta brilhando */
-    .seta {
-        width: 80px;
-        margin: 10px auto;
-        animation: brilho 1.2s infinite;
-    }
+        #botaoBau {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
 
-    @keyframes brilho {
-        0% { opacity: 0.3; transform: translateY(-5px); }
-        50% { opacity: 1; transform: translateY(0); }
-        100% { opacity: 0.3; transform: translateY(-5px); }
-    }
+        #botaoBau:active img {
+            transform: scale(0.95);
+        }
 
-    /* Botão invisível por cima do baú */
-    .botao-invisivel {
-        width: 200px;
-        height: 180px;
-        position: relative;
-        margin: 0 auto;
-        margin-top: -180px; 
-        cursor: pointer;
-    }
+        /* brilho */
+        #brilho {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            filter: blur(20px);
+            background: radial-gradient(circle, rgba(255,255,0,0.9), rgba(255,255,0,0));
+            transition: opacity 1s ease-out;
+        }
 
-    /* Esconde video area inicial */
-    #video-container {
-        display: none;
-        margin-top: 20px;
-    }
+        #videoSurpresa {
+            display: none;
+            margin-top: 20px;
+            width: 80%;
+            border-radius: 12px;
+        }
 
-    #giftcard {
-        display: none;
-        font-size: 22px;
-        font-weight: bold;
-        background: #ffcc00;
-        padding: 15px;
-        border-radius: 15px;
-        color: #000;
-        margin-top: 20px;
-    }
+        #mensagem {
+            display: none;
+            margin-top: 25px;
+            font-size: 22px;
+            color: #4c3300;
+            font-weight: bold;
+            animation: aparecer 1s forwards;
+        }
 
-</style>
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
 </head>
+
 <body>
 
-<div class="container">
+    <h1>Toque no baú para abrir 🎁</h1>
 
-    <!-- Imagem inicial -->
-    <img src="COLOQUE_AQUI_LINK_DA_SUA_IMAGEM" alt="imagem">
+    <div style="position: relative;">
+        <div id="brilho"></div>
 
-    <!-- Seta brilhando -->
-    <img class="seta" src="https://cdn-icons-png.flaticon.com/512/318/318276.png">
-
-    <p>Toque no baú!</p>
-
-    <!-- Baú (imagem) -->
-    <img id="bau" src="https://static.wikia.nocookie.net/clashroyale/images/9/9c/Golden_Chest.png" width="220">
-
-    <!-- Botão invisível por cima do baú -->
-    <div class="botao-invisivel" onclick="abrirBau()"></div>
-
-    <!-- Área onde o vídeo aparece -->
-    <div id="video-container">
-        <video id="videoBau" width="100%" autoplay>
-            <source src="COLOQUE_AQUI_O_LINK_DO_VIDEO" type="video/mp4">
-        </video>
+        <button id="botaoBau">
+            <img id="imgBau" src="clash.jpg" alt="Baú">
+        </button>
     </div>
 
-    <!-- Música -->
-    <audio id="musica" src="COLOQUE_AQUI_O_LINK_DA_MUSICA.mp3"></audio>
+    <audio id="musica" src="clash.mp3"></audio>
 
-    <!-- Gift Card -->
-    <div id="giftcard">
-        Seu presente: <br><br>
-        <span id="codigoGift">XXXX-XXXX-XXXX</span>
+    <video id="videoSurpresa" src="clash.mp4" controls></video>
+
+    <div id="mensagem">
+        ✨ Você recebeu um Gift Card para usar como quiser no Clash! ✨
     </div>
 
-</div>
+    <script>
+        const botao = document.getElementById("botaoBau");
+        const brilho = document.getElementById("brilho");
+        const musica = document.getElementById("musica");
+        const video = document.getElementById("videoSurpresa");
+        const mensagem = document.getElementById("mensagem");
 
+        botao.addEventListener("click", () => {
 
-<script>
-function abrirBau() {
-    // toca música
-    document.getElementById("musica").play();
+            // toca música
+            musica.play();
 
-    // mostra o vídeo
-    document.getElementById("video-container").style.display = "block";
+            // mostra brilho do baú
+            brilho.style.opacity = 1;
 
-    // esconde baú e seta
-    document.getElementById("bau").style.display = "none";
-    document.querySel
+            // aparece vídeo
+            video.style.display = "block";
+            video.play();
+
+            // aos 5 segundos, mostra a mensagem especial
+            setTimeout(() => {
+                mensagem.style.display = "block";
+            }, 5000);
+        });
+    </script>
+
+</body>
+</html>
