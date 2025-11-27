@@ -13,10 +13,9 @@
             font-family: Arial, sans-serif;
             overflow: hidden;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            flex-direction: column;
             text-align: center;
             position: relative;
         }
@@ -24,14 +23,14 @@
         h1 {
             color: #5a3d00;
             font-size: 26px;
-            margin-bottom: 20px;
+            margin: 20px 0;
             z-index: 10;
         }
 
         .container {
             position: relative;
-            width: 240px;
-            max-width: 75vw;
+            width: 90vw;
+            max-width: 380px;
             z-index: 10;
         }
 
@@ -47,65 +46,10 @@
             border-radius: 12px;
         }
 
-        #brilho {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 260px;
-            height: 260px;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            pointer-events: none;
-            filter: blur(25px);
-            background: radial-gradient(circle, rgba(255,255,0,1), rgba(255,255,0,0));
-            transition: opacity 0.8s ease-out;
-            z-index: 9;
-        }
-
-        /* FRASES PEQUENAS NA TELA TODA */
-        .floating-text {
-            position: absolute;
-            font-size: 12px;
-            color: #4c3300;
-            opacity: 0.8;
-            animation: floatText 8s linear infinite;
-            white-space: nowrap;
-            pointer-events: none;
-            text-shadow: 0 0 8px yellow;
-        }
-
-        @keyframes floatText {
-            from { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            to   { transform: translateY(-20vh) rotate(10deg); opacity: 1; }
-        }
-
-        /* BAÚS FLUTUANDO */
-        .icon-bau {
-            position: absolute;
-            width: 40px;
-            opacity: 0.8;
-            animation: floatIcon 10s linear infinite;
-            pointer-events: none;
-        }
-
-        /* MACHADOS FLUTUANDO */
-        .icon-machado {
-            position: absolute;
-            width: 35px;
-            opacity: 0.8;
-            animation: floatIcon 8s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes floatIcon {
-            from { transform: translateY(110vh) rotate(0deg); }
-            to   { transform: translateY(-20vh) rotate(360deg); }
-        }
-
         #mensagem {
             display: none;
             margin-top: 25px;
-            font-size: 24px;
+            font-size: 22px;
             color: #4c3300;
             font-weight: bold;
             text-shadow: 0 0 10px yellow, 0 0 20px orange;
@@ -115,7 +59,7 @@
         }
 
         @keyframes brilho {
-            from { opacity: 0.5; transform: scale(1); }
+            from { opacity: 0.6; transform: scale(1); }
             to { opacity: 1; transform: scale(1.05); }
         }
 
@@ -124,6 +68,24 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ✨ FRASES FLUTUANDO ✨ */
+        .floating-text {
+            position: absolute;
+            font-size: 14px;
+            font-weight: bold;
+            color: #4c3300;
+            opacity: 0.9;
+            animation: flutuar 10s linear infinite;
+            pointer-events: none;
+            text-shadow: 0 0 6px yellow;
+            white-space: nowrap;
+        }
+
+        @keyframes flutuar {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(8deg); opacity: 1; }
+        }
     </style>
 </head>
 
@@ -132,8 +94,6 @@
     <h1>Toque no baú para abrir 🎁</h1>
 
     <div class="container">
-        <div id="brilho"></div>
-
         <img id="imgBau" src="clash.jpg" alt="Baú">
 
         <video id="videoSurpresa" src="clash.mp4" loop muted></video>
@@ -147,14 +107,12 @@
 
     <script>
         const imgBau = document.getElementById("imgBau");
-        const brilho = document.getElementById("brilho");
         const musica = document.getElementById("musica");
         const video = document.getElementById("videoSurpresa");
         const mensagem = document.getElementById("mensagem");
 
         imgBau.addEventListener("click", () => {
 
-            brilho.style.opacity = 1;
             musica.play();
             imgBau.style.opacity = 0;
 
@@ -167,23 +125,30 @@
             setTimeout(() => {
                 mensagem.style.display = "block";
                 mensagem.style.animation = "aparecer 1s forwards, brilho 2s infinite alternate";
-                iniciarEfeitosTela();
+                iniciarFrases();
             }, 5000);
         });
 
-        /* CRIA FRASES + BAÚS + MACHADOS */
-        function iniciarEfeitosTela() {
+        /* ✨ FRASES E EMOJIS APÓS O GIFT CARD APARECER ✨ */
+        function iniciarFrases() {
+
             const frases = [
-                "Gift Card 🎁",
-                "Presente especial ✨",
-                "Recompensa mágica 💛",
-                "Gold + Gems 💎"
+                "Você merece! ✨",
+                "Recompensa lendária! 💛",
+                "Presente especial! 🎁",
+                "Gold e glória! 💎",
+                "Poder máximo! 🔥",
+                "Jogador(a) brabo(a)! 😎",
+                "Você é incrível! ⭐",
+                "Domina tudo! ⚔️",
+                "Melhor pessoa! 💖",
+                "Presente só pra você! 🌟",
+                "📦", "📦", "📦",
+                "🪓", "🪓", "🪓"
             ];
 
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 35; i++) {
                 criarFrase(frases[Math.floor(Math.random() * frases.length)]);
-                criarIcone("bau");
-                criarIcone("machado");
             }
         }
 
@@ -191,18 +156,11 @@
             const span = document.createElement("span");
             span.classList.add("floating-text");
             span.innerText = texto;
-            span.style.left = Math.random() * 100 + "vw";
-            span.style.animationDuration = 6 + Math.random() * 5 + "s";
-            document.body.appendChild(span);
-        }
 
-        function criarIcone(tipo) {
-            const img = document.createElement("img");
-            img.src = tipo === "bau" ? "clash.jpg" : "clash.jpg";
-            img.classList.add(tipo === "bau" ? "icon-bau" : "icon-machado");
-            img.style.left = Math.random() * 100 + "vw";
-            img.style.animationDuration = 6 + Math.random() * 6 + "s";
-            document.body.appendChild(img);
+            span.style.left = Math.random() * 100 + "vw";
+            span.style.animationDuration = 6 + Math.random() * 8 + "s";
+
+            document.body.appendChild(span);
         }
     </script>
 
