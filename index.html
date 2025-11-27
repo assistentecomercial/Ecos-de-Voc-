@@ -14,19 +14,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             flex-direction: column;
             text-align: center;
         }
 
         h1 {
             color: #5a3d00;
-            font-size: 28px;
+            font-size: 26px;
             margin-bottom: 20px;
         }
 
         #botaoBau img {
-            width: 180px;
+            width: 220px;
+            max-width: 70vw;
             transition: transform 0.2s;
         }
 
@@ -42,37 +43,45 @@
 
         /* brilho */
         #brilho {
-            width: 200px;
-            height: 200px;
+            width: 240px;
+            height: 240px;
             position: absolute;
             opacity: 0;
             pointer-events: none;
-            filter: blur(20px);
-            background: radial-gradient(circle, rgba(255,255,0,0.9), rgba(255,255,0,0));
+            filter: blur(25px);
+            background: radial-gradient(circle, rgba(255,255,0,1), rgba(255,255,0,0));
             transition: opacity 1s ease-out;
         }
 
         #videoSurpresa {
             display: none;
-            margin-top: 20px;
-            width: 80%;
-            border-radius: 12px;
+            margin-top: 25px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 14px;
         }
 
         #mensagem {
             display: none;
             margin-top: 25px;
-            font-size: 22px;
+            font-size: 24px;
             color: #4c3300;
             font-weight: bold;
-            animation: aparecer 1s forwards;
+            text-shadow: 0 0 10px yellow, 0 0 20px orange;
+            opacity: 0;
+            animation: brilho 2s infinite alternate;
+        }
+
+        /* animação do texto */
+        @keyframes brilho {
+            from { opacity: 0.5; transform: scale(1); }
+            to { opacity: 1; transform: scale(1.05); }
         }
 
         @keyframes aparecer {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(25px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
     </style>
 </head>
 
@@ -88,9 +97,9 @@
         </button>
     </div>
 
-    <audio id="musica" src="clash.mp3"></audio>
+    <audio id="musica" src="clash.mp3" loop></audio>
 
-    <video id="videoSurpresa" src="clash.mp4" controls></video>
+    <video id="videoSurpresa" src="clash.mp4" autoplay loop muted></video>
 
     <div id="mensagem">
         ✨ Você recebeu um Gift Card para usar como quiser no Clash! ✨
@@ -105,19 +114,19 @@
 
         botao.addEventListener("click", () => {
 
-            // toca música
-            musica.play();
-
-            // mostra brilho do baú
+            // brilho explode
             brilho.style.opacity = 1;
+
+            // música inicia
+            musica.play();
 
             // aparece vídeo
             video.style.display = "block";
-            video.play();
 
-            // aos 5 segundos, mostra a mensagem especial
+            // aparece frase aos 5 segundos
             setTimeout(() => {
                 mensagem.style.display = "block";
+                mensagem.style.animation = "aparecer 1s forwards, brilho 2s infinite alternate";
             }, 5000);
         });
     </script>
