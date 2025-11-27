@@ -89,9 +89,6 @@
 <!-- VIDEO 2 -->
 <video id="video2" src="clash.mp4" playsinline></video>
 
-<!-- MÚSICA DO SEGUNDO VÍDEO -->
-<audio id="music" src="clash.mp3" loop></audio>
-
 <!-- TELA FINAL -->
 <div id="finalBox">
     <img id="gift-img" src="clash.jpg" alt="gift card">
@@ -107,7 +104,6 @@ const video1 = document.getElementById("video1");
 const video2 = document.getElementById("video2");
 const finalBox = document.getElementById("finalBox");
 const claimBtn = document.getElementById("claimBtn");
-const music = document.getElementById("music");
 
 /* --- INICIAR SITE --- */
 startBtn.onclick = () => {
@@ -120,20 +116,15 @@ startBtn.onclick = () => {
 video1.onended = () => {
     video1.style.display = "none";
 
-    // aguarda 3s e troca para o vídeo do baú
+    // aguarda 1s e troca para o vídeo do baú
     setTimeout(() => {
         video2.style.display = "block";
         video2.play();
-        
-        // começa a música junto com o vídeo 2
-        music.play();
     }, 3000);
 };
 
 /* --- FINAL DO VIDEO 2 (BAÚ) --- */
 video2.onended = () => {
-    music.pause();  // PARA música quando aparece o presente (se quiser deixar tocando, avisar)
-
     // Exibe o gift card + botão
     finalBox.style.display = "block";
 };
