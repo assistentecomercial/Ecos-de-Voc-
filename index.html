@@ -3,230 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Presente</title>
+<title>Surpresa</title>
 
 <style>
     body {
         margin: 0;
         background: #000;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
-        position: relative;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
     }
 
-    /* Baú inicial */
-    #startImage {
-        width: 80%;
-        max-width: 400px;
+    /* Clique Aqui */
+    #startClick {
+        font-size: 32px;
+        color: white;
         cursor: pointer;
+        padding: 20px 40px;
+        background: #1e1e1e;
+        border-radius: 12px;
+        border: 2px solid #fff;
+        transition: 0.2s;
+    }
+    #startClick:hover { transform: scale(1.05); }
+
+    /* Vídeos */
+    video {
+        display: none;
+        width: 100vw;
+        max-width: 600px;
+        border-radius: 8px;
+    }
+
+    /* Botão Após Vídeo 1 */
+    #premioBtn {
+        display: none;
+        position: absolute;
+        background: red;
+        color: white;
+        padding: 16px 25px;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        animation: pulse 1s infinite;
         z-index: 10;
     }
 
-    /* Caixa do vídeo */
-    #videoBox {
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.07); }
+        100% { transform: scale(1); }
+    }
+
+    /* Gift Card */
+    #giftCard {
         display: none;
-        position: relative;
-        z-index: 2;
-    }
-
-    video {
-        width: 95vw;
-        max-width: 550px;
-        border-radius: 10px;
-        background: #000;
-        pointer-events: none; /* impede fullscreen no celular */
-    }
-
-    /* JANELAS ESTILO POP-UP */
-    .alertBox {
         position: absolute;
         width: 220px;
-        background: #e5e5e5;
-        border: 3px solid #003399;
-        border-radius: 6px;
-        padding-top: 22px;
-        box-shadow: 4px 4px 10px rgba(0,0,0,0.6);
-        animation: floatAlert 8s linear infinite;
-        z-index: 99;
-        text-align: center;
-        font-weight: bold;
-    }
-
-    .alertTitle {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: #003399;
-        color: white;
-        font-size: 14px;
-        padding: 2px 0;
-    }
-
-    @keyframes floatAlert {
-        0% { transform: translateY(100vh) scale(1); opacity: 1; }
-        100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
-    }
-
-    /* ====== JANELA DE REIVINDICAR PREMIO ====== */
-    #whatsBox {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 999999;
-        background: rgba(0,0,0,0.75);
-        padding: 16px 22px;
-        border-radius: 16px;
-        backdrop-filter: blur(6px);
-        color: #fff;
-        text-align: center;
-        width: 240px;
-        animation: fadeIn 0.6s ease forwards;
-    }
-
-    #tituloPremio {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 10px;
-        text-shadow: 0 0 6px #000;
-    }
-
-    #countdownText {
-        font-size: 15px;
-        margin-bottom: 12px;
-        font-weight: bold;
-    }
-
-    #whatsButton {
-        background: #25D366;
-        color: white;
-        text-decoration: none;
-        padding: 12px 16px;
-        border-radius: 10px;
-        font-weight: bold;
-        display: block;
-        box-shadow: 0 0 10px rgba(0,0,0,0.4);
-        transition: 0.2s;
-    }
-
-    #whatsButton:hover {
-        background: #1EBE57;
-        transform: scale(1.08);
+        bottom: 50px;
+        z-index: 20;
+        animation: fadeIn 0.7s ease forwards;
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.9); }
-        to   { opacity: 1; transform: scale(1); }
+        from { opacity: 0; transform: scale(0.7); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Botão Reivindicar */
+    #reivindiqueBtn {
+        display: none;
+        position: absolute;
+        bottom: 60px;
+        background: #25D366;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 30;
+        animation: pulse 1.1s infinite;
+        text-decoration: none;
     }
 </style>
 </head>
 <body>
 
-<!-- IMAGEM DO BAÚ -->
-<img id="startImage" src="clash.jpg" alt="baú">
+<!-- CLIQUE AQUI -->
+<div id="startClick">CLIQUE AQUI</div>
 
-<!-- VÍDEO -->
-<div id="videoBox">
-    <video id="video" src="clash.mp4" loop playsinline muted></video>
-</div>
+<!-- VÍDEOS -->
+<video id="video1" src="clashr.mp4"></video>  <!-- PRIMEIRO VÍDEO -->
+<video id="video2" src="clash.mp4"></video>   <!-- SEGUNDO VÍDEO -->
 
-<!-- MÚSICA -->
-<audio id="music" src="clash.mp3" loop></audio>
+<!-- BOTÃO PÓS-VÍDEO 1 -->
+<div id="premioBtn">ATENÇÃO!! VOCÊ RECEBEU UM PRÊMIO — CLIQUE AQUI</div>
 
-<!-- JANELA FIXA DO WHATSAPP -->
-<div id="whatsBox">
-    <div id="tituloPremio">🎁 Reivindicar prêmio</div>
-    <div id="countdownText">Redirecionando em 15s...</div>
+<!-- GIFT CARD -->
+<img id="giftCard" src="gift.png">
 
-    <a id="whatsButton"
-       href="https://wa.me/98983095536?text=reivindicar%20pr%C3%AAmio"
-       target="_blank">
-       Ir para o WhatsApp
-    </a>
-</div>
+<!-- BOTÃO REIVINDIQUE -->
+<a id="reivindiqueBtn"
+   href="https://wa.me/5598983095536?text=reivindicar%20pr%C3%AAmio"
+   target="_blank">
+   REIVINDIQUE
+</a>
 
 <script>
-const startImage = document.getElementById("startImage");
-const video = document.getElementById("video");
-const videoBox = document.getElementById("videoBox");
-const music = document.getElementById("music");
+const startClick = document.getElementById("startClick");
+const video1 = document.getElementById("video1");
+const video2 = document.getElementById("video2");
+const premioBtn = document.getElementById("premioBtn");
+const giftCard = document.getElementById("giftCard");
+const reivindiqueBtn = document.getElementById("reivindiqueBtn");
 
-/* TEXTOS DAS JANELAS */
-const mensagens = [
-    "🎁 YOU WON A GIFT CARD!",
-    "⚠️ CLAIM YOUR REWARD!",
-    "🎉 Congratulations!",
-    "💎 Gift Card Liberado!",
-    "Presentão pra você!",
-    "Clique para abrir seu prêmio",
-    "Surpresa desbloqueada!"
-];
-
-/* Quando clicar no baú */
-startImage.onclick = () => {
-    startImage.style.display = "none";
-
-    videoBox.style.display = "block";
-    video.play();
-    music.play();
-
-    /* Criar janelas infinitas */
-    setInterval(() => {
-        criarAlerta();
-    }, 900);
-
-    /* Depois de 30s → aparece caixa do WhatsApp */
-    setTimeout(() => {
-        document.getElementById("whatsBox").style.display = "block";
-        iniciarContagemWhats();
-    }, 30000);
+/* Inicia vídeo 1 */
+startClick.onclick = () => {
+    startClick.style.display = "none";
+    video1.style.display = "block";
+    video1.play();
 };
 
-/* Criar pop-ups */
-function criarAlerta() {
-    const box = document.createElement("div");
-    box.className = "alertBox";
+/* Quando vídeo 1 termina → mostra botão */
+video1.onended = () => {
+    premioBtn.style.display = "block";
+};
 
-    const title = document.createElement("div");
-    title.className = "alertTitle";
-    title.innerText = "WARNING";
+/* Ao clicar no botão → inicia vídeo 2 */
+premioBtn.onclick = () => {
+    premioBtn.style.display = "none";
+    video1.style.display = "none";
 
-    const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
-    box.innerHTML = msg;
+    video2.style.display = "block";
+    video2.play();
+};
 
-    box.appendChild(title);
-
-    box.style.left = Math.random() * 80 + "vw";
-    box.style.fontSize = (Math.random() * 4 + 14) + "px";
-
-    document.body.appendChild(box);
-
-    setTimeout(() => box.remove(), 9000);
-}
-
-/* Contagem + redirecionamento */
-function iniciarContagemWhats() {
-    let timeLeft = 15;
-    const countdownText = document.getElementById("countdownText");
-
-    countdownText.textContent = `Redirecionando em ${timeLeft}s...`;
-
-    const timer = setInterval(() => {
-        timeLeft--;
-        countdownText.textContent = `Redirecionando em ${timeLeft}s...`;
-
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            window.location.href =
-                "https://wa.me/98983095536?text=reivindicar%20pr%C3%AAmio";
-        }
-    }, 1000);
-}
+/* No segundo 5 do vídeo 2 → mostra gift card + botão */
+video2.ontimeupdate = () => {
+    if (video2.currentTime >= 5 && giftCard.style.display === "none") {
+        giftCard.style.display = "block";
+        reivindiqueBtn.style.display = "block";
+    }
+};
 </script>
 
 </body>
