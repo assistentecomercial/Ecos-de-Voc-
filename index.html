@@ -11,54 +11,95 @@
             padding: 0;
             background: #f7e9a6;
             font-family: Arial, sans-serif;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             flex-direction: column;
             text-align: center;
+            position: relative;
         }
 
         h1 {
             color: #5a3d00;
             font-size: 26px;
             margin-bottom: 20px;
+            z-index: 10;
         }
 
-        #botaoBau img {
-            width: 220px;
-            max-width: 70vw;
-            transition: transform 0.2s;
-        }
-
-        #botaoBau {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        #botaoBau:active img {
-            transform: scale(0.95);
-        }
-
-        /* brilho */
-        #brilho {
+        .container {
+            position: relative;
             width: 240px;
-            height: 240px;
+            max-width: 75vw;
+            z-index: 10;
+        }
+
+        #imgBau {
+            width: 100%;
+            cursor: pointer;
+            transition: opacity 0.4s ease;
+        }
+
+        #videoSurpresa {
+            width: 100%;
+            display: none;
+            border-radius: 12px;
+        }
+
+        #brilho {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 260px;
+            height: 260px;
+            transform: translate(-50%, -50%);
             opacity: 0;
             pointer-events: none;
             filter: blur(25px);
             background: radial-gradient(circle, rgba(255,255,0,1), rgba(255,255,0,0));
-            transition: opacity 1s ease-out;
+            transition: opacity 0.8s ease-out;
+            z-index: 9;
         }
 
-        #videoSurpresa {
-            display: none;
-            margin-top: 25px;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 14px;
+        /* FRASES PEQUENAS NA TELA TODA */
+        .floating-text {
+            position: absolute;
+            font-size: 12px;
+            color: #4c3300;
+            opacity: 0.8;
+            animation: floatText 8s linear infinite;
+            white-space: nowrap;
+            pointer-events: none;
+            text-shadow: 0 0 8px yellow;
+        }
+
+        @keyframes floatText {
+            from { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            to   { transform: translateY(-20vh) rotate(10deg); opacity: 1; }
+        }
+
+        /* BAÚS FLUTUANDO */
+        .icon-bau {
+            position: absolute;
+            width: 40px;
+            opacity: 0.8;
+            animation: floatIcon 10s linear infinite;
+            pointer-events: none;
+        }
+
+        /* MACHADOS FLUTUANDO */
+        .icon-machado {
+            position: absolute;
+            width: 35px;
+            opacity: 0.8;
+            animation: floatIcon 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatIcon {
+            from { transform: translateY(110vh) rotate(0deg); }
+            to   { transform: translateY(-20vh) rotate(360deg); }
         }
 
         #mensagem {
@@ -70,9 +111,9 @@
             text-shadow: 0 0 10px yellow, 0 0 20px orange;
             opacity: 0;
             animation: brilho 2s infinite alternate;
+            z-index: 10;
         }
 
-        /* animação do texto */
         @keyframes brilho {
             from { opacity: 0.5; transform: scale(1); }
             to { opacity: 1; transform: scale(1.05); }
@@ -82,6 +123,7 @@
             from { opacity: 0; transform: translateY(25px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
     </style>
 </head>
 
@@ -89,46 +131,79 @@
 
     <h1>Toque no baú para abrir 🎁</h1>
 
-    <div style="position: relative;">
+    <div class="container">
         <div id="brilho"></div>
 
-        <button id="botaoBau">
-            <img id="imgBau" src="clash.jpg" alt="Baú">
-        </button>
+        <img id="imgBau" src="clash.jpg" alt="Baú">
+
+        <video id="videoSurpresa" src="clash.mp4" loop muted></video>
     </div>
 
     <audio id="musica" src="clash.mp3" loop></audio>
-
-    <video id="videoSurpresa" src="clash.mp4" autoplay loop muted></video>
 
     <div id="mensagem">
         ✨ Você recebeu um Gift Card para usar como quiser no Clash! ✨
     </div>
 
     <script>
-        const botao = document.getElementById("botaoBau");
+        const imgBau = document.getElementById("imgBau");
         const brilho = document.getElementById("brilho");
         const musica = document.getElementById("musica");
         const video = document.getElementById("videoSurpresa");
         const mensagem = document.getElementById("mensagem");
 
-        botao.addEventListener("click", () => {
+        imgBau.addEventListener("click", () => {
 
-            // brilho explode
             brilho.style.opacity = 1;
-
-            // música inicia
             musica.play();
+            imgBau.style.opacity = 0;
 
-            // aparece vídeo
-            video.style.display = "block";
+            setTimeout(() => {
+                imgBau.style.display = "none";
+                video.style.display = "block";
+                video.play();
+            }, 400);
 
-            // aparece frase aos 5 segundos
             setTimeout(() => {
                 mensagem.style.display = "block";
                 mensagem.style.animation = "aparecer 1s forwards, brilho 2s infinite alternate";
+                iniciarEfeitosTela();
             }, 5000);
         });
+
+        /* CRIA FRASES + BAÚS + MACHADOS */
+        function iniciarEfeitosTela() {
+            const frases = [
+                "Gift Card 🎁",
+                "Presente especial ✨",
+                "Recompensa mágica 💛",
+                "Gold + Gems 💎"
+            ];
+
+            for (let i = 0; i < 20; i++) {
+                criarFrase(frases[Math.floor(Math.random() * frases.length)]);
+                criarIcone("bau");
+                criarIcone("machado");
+            }
+        }
+
+        function criarFrase(texto) {
+            const span = document.createElement("span");
+            span.classList.add("floating-text");
+            span.innerText = texto;
+            span.style.left = Math.random() * 100 + "vw";
+            span.style.animationDuration = 6 + Math.random() * 5 + "s";
+            document.body.appendChild(span);
+        }
+
+        function criarIcone(tipo) {
+            const img = document.createElement("img");
+            img.src = tipo === "bau" ? "clash.jpg" : "clash.jpg";
+            img.classList.add(tipo === "bau" ? "icon-bau" : "icon-machado");
+            img.style.left = Math.random() * 100 + "vw";
+            img.style.animationDuration = 6 + Math.random() * 6 + "s";
+            document.body.appendChild(img);
+        }
     </script>
 
 </body>
