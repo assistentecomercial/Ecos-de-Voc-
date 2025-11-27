@@ -9,19 +9,15 @@
     body {
         margin: 0;
         padding: 0;
-        background: #1e1e1e;
+        background: #1b1b1b;
         color: white;
         font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
         text-align: center;
     }
 
     .container {
         max-width: 430px;
+        margin: auto;
         padding: 20px;
     }
 
@@ -29,54 +25,93 @@
         max-width: 100%;
     }
 
-    #bau {
-        width: 180px;
+    /* Seta brilhando */
+    .seta {
+        width: 80px;
+        margin: 10px auto;
+        animation: brilho 1.2s infinite;
+    }
+
+    @keyframes brilho {
+        0% { opacity: 0.3; transform: translateY(-5px); }
+        50% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0.3; transform: translateY(-5px); }
+    }
+
+    /* Botão invisível por cima do baú */
+    .botao-invisivel {
+        width: 200px;
+        height: 180px;
+        position: relative;
+        margin: 0 auto;
+        margin-top: -180px; 
         cursor: pointer;
-        animation: pulse 1.5s infinite;
     }
 
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.07); }
-        100% { transform: scale(1); }
-    }
-
-    #loading {
+    /* Esconde video area inicial */
+    #video-container {
         display: none;
-        font-size: 20px;
-        margin-top: 15px;
+        margin-top: 20px;
     }
+
+    #giftcard {
+        display: none;
+        font-size: 22px;
+        font-weight: bold;
+        background: #ffcc00;
+        padding: 15px;
+        border-radius: 15px;
+        color: #000;
+        margin-top: 20px;
+    }
+
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
-    <h1>Toque no baú para abrir sua surpresa 💛</h1>
+    <!-- Imagem inicial -->
+    <img src="COLOQUE_AQUI_LINK_DA_SUA_IMAGEM" alt="imagem">
 
-    <!-- Valkyria -->
-    <img src="https://static.wikia.nocookie.net/clashroyale/images/4/49/ValkyrieCard.png" width="160">
+    <!-- Seta brilhando -->
+    <img class="seta" src="https://cdn-icons-png.flaticon.com/512/318/318276.png">
 
-    <br>
+    <p>Toque no baú!</p>
 
-    <!-- Bau -->
-    <img id="bau" src="https://static.wikia.nocookie.net/clashroyale/images/9/9c/Golden_Chest.png"
-         onclick="abrirBau()">
+    <!-- Baú (imagem) -->
+    <img id="bau" src="https://static.wikia.nocookie.net/clashroyale/images/9/9c/Golden_Chest.png" width="220">
 
-    <p id="loading">Abrindo... ⏳</p>
+    <!-- Botão invisível por cima do baú -->
+    <div class="botao-invisivel" onclick="abrirBau()"></div>
+
+    <!-- Área onde o vídeo aparece -->
+    <div id="video-container">
+        <video id="videoBau" width="100%" autoplay>
+            <source src="COLOQUE_AQUI_O_LINK_DO_VIDEO" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Música -->
+    <audio id="musica" src="COLOQUE_AQUI_O_LINK_DA_MUSICA.mp3"></audio>
+
+    <!-- Gift Card -->
+    <div id="giftcard">
+        Seu presente: <br><br>
+        <span id="codigoGift">XXXX-XXXX-XXXX</span>
+    </div>
 
 </div>
 
+
 <script>
 function abrirBau() {
-    document.getElementById("loading").style.display = "block";
+    // toca música
+    document.getElementById("musica").play();
 
-    setTimeout(function() {
-        window.location.href = "pagina2.html";
-    }, 5000); // 5 segundos
-}
-</script>
+    // mostra o vídeo
+    document.getElementById("video-container").style.display = "block";
 
-</body>
-</html>
+    // esconde baú e seta
+    document.getElementById("bau").style.display = "none";
+    document.querySel
