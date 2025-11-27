@@ -1,167 +1,152 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presente Surpresa 🎁</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presente</title>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #f7e9a6;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-            position: relative;
-        }
+<style>
+    body {
+        margin: 0;
+        background: #000;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        position: relative;
+    }
 
-        h1 {
-            color: #5a3d00;
-            font-size: 26px;
-            margin: 20px 0;
-            z-index: 10;
-        }
+    /* Baú inicial */
+    #startImage {
+        width: 80%;
+        max-width: 400px;
+        cursor: pointer;
+        z-index: 10;
+    }
 
-        .container {
-            position: relative;
-            width: 90vw;
-            max-width: 380px;
-            z-index: 10;
-        }
+    /* Caixa do vídeo */
+    #videoBox {
+        display: none;
+        position: relative;
+        z-index: 2;
+    }
 
-        #imgBau {
-            width: 100%;
-            cursor: pointer;
-            transition: opacity 0.4s ease;
-        }
+    video {
+        width: 95vw;
+        max-width: 550px;
+        border-radius: 10px;
+        background: #000;
+        pointer-events: none; /* impede fullscreen no celular */
+    }
 
-        #videoSurpresa {
-            width: 100%;
-            display: none;
-            border-radius: 12px;
-        }
+    /* JANELAS ESTILO POP-UP */
+    .alertBox {
+        position: absolute;
+        width: 220px;
+        background: #e5e5e5;
+        border: 3px solid #003399;
+        border-radius: 6px;
+        padding-top: 22px;
+        box-shadow: 4px 4px 10px rgba(0,0,0,0.6);
+        animation: floatAlert 8s linear infinite;
+        z-index: 99;
+        text-align: center;
+        font-weight: bold;
+    }
 
-        #mensagem {
-            display: none;
-            margin-top: 25px;
-            font-size: 22px;
-            color: #4c3300;
-            font-weight: bold;
-            text-shadow: 0 0 10px yellow, 0 0 20px orange;
-            opacity: 0;
-            animation: brilho 2s infinite alternate;
-            z-index: 10;
-        }
+    /* Barra superior */
+    .alertTitle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #003399;
+        color: white;
+        font-size: 14px;
+        padding: 2px 0;
+    }
 
-        @keyframes brilho {
-            from { opacity: 0.6; transform: scale(1); }
-            to { opacity: 1; transform: scale(1.05); }
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ✨ FRASES FLUTUANDO ✨ */
-        .floating-text {
-            position: absolute;
-            font-size: 14px;
-            font-weight: bold;
-            color: #4c3300;
-            opacity: 0.9;
-            animation: flutuar 10s linear infinite;
-            pointer-events: none;
-            text-shadow: 0 0 6px yellow;
-            white-space: nowrap;
-        }
-
-        @keyframes flutuar {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            20% { opacity: 1; }
-            100% { transform: translateY(-20vh) rotate(8deg); opacity: 1; }
-        }
-    </style>
+    /* Subindo estilo pop-up */
+    @keyframes floatAlert {
+        0% { transform: translateY(100vh) scale(1); opacity: 1; }
+        100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
+    }
+</style>
 </head>
-
 <body>
 
-    <h1>Toque no baú para abrir 🎁</h1>
+<!-- IMAGEM DO BAÚ -->
+<img id="startImage" src="clash.jpg" alt="baú">
 
-    <div class="container">
-        <img id="imgBau" src="clash.jpg" alt="Baú">
+<!-- VÍDEO -->
+<div id="videoBox">
+    <video id="video" src="clash.mp4" loop playsinline muted></video>
+</div>
 
-        <video id="videoSurpresa" src="clash.mp4" loop muted></video>
-    </div>
+<!-- MÚSICA -->
+<audio id="music" src="clash.mp3" loop></audio>
 
-    <audio id="musica" src="clash.mp3" loop></audio>
+<script>
+const startImage = document.getElementById("startImage");
+const video = document.getElementById("video");
+const videoBox = document.getElementById("videoBox");
+const music = document.getElementById("music");
 
-    <div id="mensagem">
-        ✨ Você recebeu um Gift Card para usar como quiser no Clash! ✨
-    </div>
+/* TEXTOS DAS JANELAS */
+const mensagens = [
+    "🎁 YOU WON A GIFT CARD!",
+    "⚠️ CLAIM YOUR REWARD!",
+    "🎉 Congratulations!",
+    "💎 Gift Card Liberado!",
+    "$100 Added to your Account",
+    "Presentão pra você!",
+    "Clique para abrir seu prêmio",
+    "Surpresa desbloqueada!"
+];
 
-    <script>
-        const imgBau = document.getElementById("imgBau");
-        const musica = document.getElementById("musica");
-        const video = document.getElementById("videoSurpresa");
-        const mensagem = document.getElementById("mensagem");
+startImage.onclick = () => {
+    startImage.style.display = "none"; // some a imagem do baú
 
-        imgBau.addEventListener("click", () => {
+    videoBox.style.display = "block";  // mostra o vídeo
+    video.play();
+    music.play();
 
-            musica.play();
-            imgBau.style.opacity = 0;
+    /* Criar janelas infinitas */
+    setInterval(() => {
+        criarAlerta();
+    }, 900);
+};
 
-            setTimeout(() => {
-                imgBau.style.display = "none";
-                video.style.display = "block";
-                video.play();
-            }, 400);
+/* Criar uma janela estilo o print */
+function criarAlerta() {
+    const box = document.createElement("div");
+    box.className = "alertBox";
 
-            setTimeout(() => {
-                mensagem.style.display = "block";
-                mensagem.style.animation = "aparecer 1s forwards, brilho 2s infinite alternate";
-                iniciarFrases();
-            }, 5000);
-        });
+    const title = document.createElement("div");
+    title.className = "alertTitle";
+    title.innerText = "WARNING";
 
-        /* ✨ FRASES E EMOJIS APÓS O GIFT CARD APARECER ✨ */
-        function iniciarFrases() {
+    const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
+    box.innerHTML = msg;
 
-            const frases = [
-                "Você merece! ✨",
-                "Recompensa lendária! 💛",
-                "Presente especial! 🎁",
-                "Gold e glória! 💎",
-                "Poder máximo! 🔥",
-                "Jogador(a) brabo(a)! 😎",
-                "Você é incrível! ⭐",
-                "Domina tudo! ⚔️",
-                "Melhor pessoa! 💖",
-                "Presente só pra você! 🌟",
-                "📦", "📦", "📦",
-                "🪓", "🪓", "🪓"
-            ];
+    box.appendChild(title);
 
-            for (let i = 0; i < 35; i++) {
-                criarFrase(frases[Math.floor(Math.random() * frases.length)]);
-            }
-        }
+    // posição e tamanho aleatórios
+    box.style.left = Math.random() * 80 + "vw";
+    box.style.fontSize = (Math.random() * 4 + 14) + "px";
 
-        function criarFrase(texto) {
-            const span = document.createElement("span");
-            span.classList.add("floating-text");
-            span.innerText = texto;
+    document.body.appendChild(box);
 
-            span.style.left = Math.random() * 100 + "vw";
-            span.style.animationDuration = 6 + Math.random() * 8 + "s";
+    // remover depois que sobe a tela
+    setTimeout(() => box.remove(), 9000);
+}
+</script>
 
-            document.body.appendChild(span);
-        }
+</body>
+</html>
+
     </script>
 
 </body>
